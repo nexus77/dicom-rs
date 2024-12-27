@@ -12,6 +12,15 @@ const IMPLICIT_VR_LE: &str = "1.2.840.10008.1.2";
 const MR_IMAGE_STORAGE_RAW: &str = "1.2.840.10008.5.1.4.1.1.4\0";
 const ULTRASOUND_IMAGE_STORAGE_RAW: &str = "1.2.840.10008.5.1.4.1.1.6.1\0";
 
+fn trim_uid(uid: String) -> String{
+    if uid.ends_with('\0') {
+        uid.trim_end_matches(|c: char| c.is_whitespace() || c == '\0')
+                .to_string()
+    } else {
+        uid
+    }
+}
+
 fn spawn_scp(
     abstract_syntax_uids: &'static [&str],
     promiscuous: bool,
@@ -36,6 +45,7 @@ fn spawn_scp(
                 id: 1,
                 reason: PresentationContextResultReason::Acceptance,
                 transfer_syntax: IMPLICIT_VR_LE.to_string(),
+                abstract_syntax: Some(trim_uid(MR_IMAGE_STORAGE_RAW.to_string())),
             }]
         );
 
@@ -74,6 +84,7 @@ async fn spawn_scp_async(
                 id: 1,
                 reason: PresentationContextResultReason::Acceptance,
                 transfer_syntax: IMPLICIT_VR_LE.to_string(),
+                abstract_syntax: Some(trim_uid(MR_IMAGE_STORAGE_RAW.to_string())),
             }]
         );
 

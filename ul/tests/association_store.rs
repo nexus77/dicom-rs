@@ -40,11 +40,13 @@ fn spawn_scp() -> Result<(std::thread::JoinHandle<Result<()>>, SocketAddr)> {
                     id: 1,
                     reason: PresentationContextResultReason::Acceptance,
                     transfer_syntax: IMPLICIT_VR_LE.to_string(),
+                    abstract_syntax: Some(MR_IMAGE_STORAGE.to_string()),
                 },
                 PresentationContextResult {
                     id: 3,
                     reason: PresentationContextResultReason::Acceptance,
                     transfer_syntax: JPEG_BASELINE.to_string(),
+                    abstract_syntax: Some(DIGITAL_MG_STORAGE_SOP_CLASS.to_string()),
                 }
             ],
         );
@@ -80,11 +82,13 @@ async fn spawn_scp_async() -> Result<(tokio::task::JoinHandle<Result<()>>, Socke
                     id: 1,
                     reason: PresentationContextResultReason::Acceptance,
                     transfer_syntax: IMPLICIT_VR_LE.to_string(),
+                    abstract_syntax: Some(MR_IMAGE_STORAGE.to_string()),
                 },
                 PresentationContextResult {
                     id: 3,
                     reason: PresentationContextResultReason::Acceptance,
                     transfer_syntax: JPEG_BASELINE.to_string(),
+                    abstract_syntax: Some(DIGITAL_MG_STORAGE_SOP_CLASS.to_string()),
                 }
             ],
         );

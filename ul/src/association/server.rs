@@ -568,13 +568,14 @@ where
                     .map(|pc| {
                         if !self
                             .abstract_syntax_uids
-                            .contains(&trim_uid(Cow::from(pc.abstract_syntax)))
+                            .contains(&trim_uid(Cow::from(pc.abstract_syntax.clone())))
                             && !self.promiscuous
                         {
                             return PresentationContextResult {
                                 id: pc.id,
                                 reason: PresentationContextResultReason::AbstractSyntaxNotSupported,
                                 transfer_syntax: "1.2.840.10008.1.2".to_string(),
+                                abstract_syntax: Some(trim_uid(Cow::from(pc.abstract_syntax.clone())).to_string())
                             };
                         }
 
@@ -592,6 +593,7 @@ where
                             id: pc.id,
                             reason,
                             transfer_syntax,
+                            abstract_syntax: Some(trim_uid(Cow::from(pc.abstract_syntax)).to_string())
                         }
                     })
                     .collect();
@@ -1035,13 +1037,14 @@ pub mod non_blocking {
                             .map(|pc| {
                                 if !self
                                     .abstract_syntax_uids
-                                    .contains(&trim_uid(Cow::from(pc.abstract_syntax)))
+                                    .contains(&trim_uid(Cow::from(pc.abstract_syntax.clone())))
                                     && !self.promiscuous
                                 {
                                     return PresentationContextResult {
                                         id: pc.id,
                                         reason: PresentationContextResultReason::AbstractSyntaxNotSupported,
                                         transfer_syntax: "1.2.840.10008.1.2".to_string(),
+                                        abstract_syntax: Some(trim_uid(Cow::from(pc.abstract_syntax.clone())).to_string())
                                     };
                                 }
 
@@ -1059,6 +1062,7 @@ pub mod non_blocking {
                                     id: pc.id,
                                     reason,
                                     transfer_syntax,
+                                    abstract_syntax: Some(trim_uid(Cow::from(pc.abstract_syntax)).to_string())
                                 }
                             })
                             .collect();

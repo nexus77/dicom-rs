@@ -691,6 +691,7 @@ fn read_pdu_variable(mut buf: impl Buf, codec: &dyn TextCodec) -> Result<Option<
                     id: presentation_context_id,
                     reason,
                     transfer_syntax: transfer_syntax.context(MissingTransferSyntaxSnafu)?,
+                    abstract_syntax: None,
                 },
             )))
         }

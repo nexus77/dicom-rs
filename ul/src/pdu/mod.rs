@@ -161,6 +161,7 @@ pub struct PresentationContextResult {
     pub id: u8,
     pub reason: PresentationContextResultReason,
     pub transfer_syntax: String,
+    pub abstract_syntax: Option<String>,
 }
 
 #[derive(Clone, Eq, PartialEq, PartialOrd, Hash, Debug)]

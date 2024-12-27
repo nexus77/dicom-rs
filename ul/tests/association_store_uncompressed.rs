@@ -24,6 +24,15 @@ static MR_IMAGE_STORAGE: &str = "1.2.840.10008.5.1.4.1.1.4";
 static DIGITAL_MG_STORAGE_SOP_CLASS_RAW: &str = "1.2.840.10008.5.1.4.1.1.1.2\0";
 static DIGITAL_MG_STORAGE_SOP_CLASS: &str = "1.2.840.10008.5.1.4.1.1.1.2";
 
+fn trim_uid(uid: String) -> String{
+    if uid.ends_with('\0') {
+        uid.trim_end_matches(|c: char| c.is_whitespace() || c == '\0')
+                .to_string()
+    } else {
+        uid
+    }
+}
+
 fn spawn_scp() -> Result<(std::thread::JoinHandle<Result<()>>, SocketAddr)> {
     let listener = std::net::TcpListener::bind("localhost:0")?;
     let addr = listener.local_addr()?;
@@ -46,6 +55,7 @@ fn spawn_scp() -> Result<(std::thread::JoinHandle<Result<()>>, SocketAddr)> {
                     id: 1,
                     reason: PresentationContextResultReason::Acceptance,
                     transfer_syntax: IMPLICIT_VR_LE.to_string(),
+                    abstract_syntax: Some(trim_uid(MR_IMAGE_STORAGE_RAW.to_string())),
                 },
                 // should always pick Explicit VR LE
                 // because JPEG baseline was not explicitly enabled in SCP
@@ -53,6 +63,7 @@ fn spawn_scp() -> Result<(std::thread::JoinHandle<Result<()>>, SocketAddr)> {
                     id: 3,
                     reason: PresentationContextResultReason::Acceptance,
                     transfer_syntax: EXPLICIT_VR_LE.to_string(),
+                    abstract_syntax: Some(trim_uid(DIGITAL_MG_STORAGE_SOP_CLASS_RAW.to_string())),
                 }
             ],
         );
@@ -90,6 +101,7 @@ async fn spawn_scp_async() -> Result<(tokio::task::JoinHandle<Result<()>>, Socke
                     id: 1,
                     reason: PresentationContextResultReason::Acceptance,
                     transfer_syntax: IMPLICIT_VR_LE.to_string(),
+                    abstract_syntax: Some(trim_uid(MR_IMAGE_STORAGE_RAW.to_string())),
                 },
                 // should always pick Explicit VR LE
                 // because JPEG baseline was not explicitly enabled in SCP
@@ -97,6 +109,7 @@ async fn spawn_scp_async() -> Result<(tokio::task::JoinHandle<Result<()>>, Socke
                     id: 3,
                     reason: PresentationContextResultReason::Acceptance,
                     transfer_syntax: EXPLICIT_VR_LE.to_string(),
+                    abstract_syntax: Some(trim_uid(DIGITAL_MG_STORAGE_SOP_CLASS_RAW.to_string())),
                 }
             ],
         );
